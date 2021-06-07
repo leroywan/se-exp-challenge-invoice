@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.scss";
+import { useTranslation } from "react-i18next";
+import "./locales/i18n";
 
 interface AppProps {
   color: string;
@@ -8,6 +10,8 @@ interface AppProps {
 }
 
 function App({ color, testString }: AppProps) {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
@@ -21,6 +25,7 @@ function App({ color, testString }: AppProps) {
         >
           Learn react
         </a>
+        <p>Test translation: {t("welcome", { name: testString })}</p>
       </header>
     </div>
   );
