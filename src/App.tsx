@@ -2,12 +2,17 @@ import React from "react";
 import logo from "./logo.svg";
 import styles from "./App.module.scss";
 
-function App() {
+interface AppProps {
+  color: string;
+  testString?: string;
+}
+
+function App({ color, testString }: AppProps) {
   return (
     <div className={styles.App}>
       <header className={styles.AppHeader}>
         <img src={logo} className={styles.AppLogo} alt="logo" />
-        <p>Hello World!</p>
+        <p style={{ color: color }}>Hello {testString}!</p>
         <a
           className={styles.AppLink}
           href="https://reactjs.org"
