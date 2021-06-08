@@ -20,6 +20,43 @@ interface GetCustomerResponse {
   customers: Customer[];
 }
 
+interface CustomerListProps {
+  customers: Customer[];
+}
+
+interface CustomerRowProps {
+  name: Customer["name"];
+  email: Customer["email"];
+  edit?: React.ReactElement;
+  isHeader?: Boolean;
+}
+
+const CustomerRow = ({ name, email, edit, isHeader }: CustomerRowProps) => (
+  <div
+    className={`${styles.CustomerRow} ${isHeader && styles.CustomerRowBold}`}
+  >
+    <div className={styles.CustomerRowItem}>{name}</div>
+    <div className={styles.CustomerRowItem}>{email}</div>
+    <div className={styles.CustomerRowItem}>{edit}</div>
+  </div>
+);
+
+const CustomerList = ({ customers }: CustomerListProps) => (
+  <div className={styles.CustomerList}>
+    <CustomerRow name="Name" email="Email" isHeader />
+    {customers.map((customer) => (
+      <CustomerRow
+        key={customer.id}
+        name={customer.name}
+        email={customer.email}
+        edit={(() => (
+          <button>Edit</button>
+        ))()}
+      />
+    ))}
+  </div>
+);
+
 function App() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
@@ -38,7 +75,7 @@ function App() {
   }, []);
 
   const customersMarkup = !isLoading ? (
-    customers.map((customer) => <li key={customer.id}>{customer.name}</li>)
+    <CustomerList customers={customers} />
   ) : (
     <p>loading...</p>
   );

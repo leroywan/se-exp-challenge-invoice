@@ -38,3 +38,26 @@ $breakpoint-screen: 800px;
 .Heading {
   margin: 0 0 var(--spacing-4) 0;
 }
+
+.CustomerList {
+  padding: var(--spacing-1);
+}
+
+.CustomerRow {
+  display: flex;
+}
+
+.CustomerRowBold {
+  font-weight: bold;
+}
+
+.CustomerRowItem {
+  flex: 1;
+  padding: var(--spacing-2) 0;
+  padding-right: var(--spacing-2);
+
+  &:last-child {
+    text-align: right;
+    padding-right: 0;
+  }
+}
