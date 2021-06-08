@@ -1,0 +1,40 @@
+$breakpoint-screen: 800px;
+
+.App {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media screen and (min-width: $breakpoint-screen) {
+    grid-template-columns: var(--width-sidebar) 1fr;
+  }
+}
+
+.SideBar {
+  padding: var(--spacing-4);
+  background-color: var(--color-bg);
+  height: calc(100vh - var(--spacing-8));
+  display: none;
+
+  @media screen and (min-width: $breakpoint-screen) {
+    display: block;
+  }
+}
+
+.Logo {
+  width: 100%;
+  height: var(--height-logo);
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  text-indent: -500%;
+  background: url("./static/wave-logo.svg") left top no-repeat;
+  background-size: auto 200%;
+}
+
+.Body {
+  padding: var(--spacing-8) var(--spacing-8);
+}
+
+.Heading {
+  margin: 0 0 var(--spacing-4) 0;
+}
