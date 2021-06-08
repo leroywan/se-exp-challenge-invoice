@@ -29,6 +29,7 @@ interface GetCustomerResponse {
 interface CustomerRowProps {
   name: Customer["name"];
   email: Customer["email"];
+  bolded?: Boolean;
   editCustomer?: () => void;
 }
 
@@ -42,14 +43,23 @@ interface FormInputs {
   province: string;
 }
 
-const CustomerRow = ({ name, email, editCustomer }: CustomerRowProps) => {
+const CustomerRow = ({
+  name,
+  email,
+  bolded,
+  editCustomer,
+}: CustomerRowProps) => {
   const { t } = useTranslation();
   return (
-    <div className={styles.CustomerRow}>
+    <div
+      className={`${styles.CustomerRow} ${bolded && styles.CustomerRowBolded}`}
+    >
       <div className={styles.CustomerRowItem}>{name}</div>
       <div className={styles.CustomerRowItem}>{email}</div>
       <div className={styles.CustomerRowItem}>
-        <button onClick={editCustomer}>{t("editButtonLabel")}</button>
+        {editCustomer && (
+          <button onClick={editCustomer}>{t("editButtonLabel")}</button>
+        )}
       </div>
     </div>
   );
@@ -153,6 +163,11 @@ function App() {
         </div>
         <div className={styles.Body}>
           <h1 className={styles.Heading}>{t("heading")}</h1>
+          <CustomerRow
+            name={t("editCustomerModalName")}
+            email={t("editCustomerModalEmail")}
+            bolded
+          />
           {customersMarkup}
           {languageButtons}
         </div>

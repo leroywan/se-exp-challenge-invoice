@@ -39,26 +39,24 @@ $breakpoint-screen: 800px;
   margin: 0 0 var(--spacing-4) 0;
 }
 
-.CustomerList {
-  padding: var(--spacing-1);
-}
-
 .CustomerRow {
   display: flex;
+
+  &:nth-child(even) {
+    background-color: var(--color-bg);
+  }
 }
 
-.CustomerRowBold {
+.CustomerRowBolded {
   font-weight: bold;
 }
 
 .CustomerRowItem {
   flex: 1;
-  padding: var(--spacing-2) 0;
-  padding-right: var(--spacing-2);
+  padding: var(--spacing-4);
 
   &:last-child {
     text-align: right;
-    padding-right: 0;
   }
 }
 
