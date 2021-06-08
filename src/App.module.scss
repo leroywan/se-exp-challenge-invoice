@@ -61,3 +61,30 @@ $breakpoint-screen: 800px;
     padding-right: 0;
   }
 }
+
+.ModalTitle {
+  margin-top: 0;
+  margin-bottom: var(--spacing-4);
+}
+
+.FormGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: var(--spacing-4);
+  margin-bottom: var(--spacing-2);
+}
+
+.InputItem {
+  margin-bottom: var(--spacing-2);
+
+  & > label {
+    display: block;
+    margin-bottom: var(--spacing-1);
+  }
+
+  & > input {
+    display: block;
+    padding: var(--spacing-2);
+    width: calc(100% - var(--spacing-4));
+  }
+}
