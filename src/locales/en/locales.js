@@ -1,6 +1,7 @@
 export const TRANSLATIONS_EN = {
   heading: "Customers",
   requiredFieldError: "This field is required",
+  editButtonLabel: "Edit",
   editCustomerModalTitle: "Edit customer",
   editCustomerModalName: "Name",
   editCustomerModalEmail: "Email",
@@ -9,4 +10,5 @@ export const TRANSLATIONS_EN = {
   editCustomerModalPostal: "Postal",
   editCustomerModalCity: "City",
   editCustomerModalProvince: "Province",
+  editCustomerModalChannelWebsite: "Website",
 };

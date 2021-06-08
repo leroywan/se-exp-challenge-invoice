@@ -5,6 +5,7 @@ import "./locales/i18n";
 import axios from "axios";
 import Modal from "react-modal";
 import { useForm } from "react-hook-form";
+import i18n from "i18next";
 
 Modal.setAppElement("#root");
 
@@ -41,15 +42,18 @@ interface FormInputs {
   province: string;
 }
 
-const CustomerRow = ({ name, email, editCustomer }: CustomerRowProps) => (
-  <div className={styles.CustomerRow}>
-    <div className={styles.CustomerRowItem}>{name}</div>
-    <div className={styles.CustomerRowItem}>{email}</div>
-    <div className={styles.CustomerRowItem}>
-      <button onClick={editCustomer}>edit</button>
+const CustomerRow = ({ name, email, editCustomer }: CustomerRowProps) => {
+  const { t } = useTranslation();
+  return (
+    <div className={styles.CustomerRow}>
+      <div className={styles.CustomerRowItem}>{name}</div>
+      <div className={styles.CustomerRowItem}>{email}</div>
+      <div className={styles.CustomerRowItem}>
+        <button onClick={editCustomer}>{t("editButtonLabel")}</button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 function App() {
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
@@ -117,8 +121,27 @@ function App() {
     <p>loading...</p>
   );
 
+  const languageButtons = (
+    <div className={styles.LanguageButtons}>
+      <button
+        onClick={() => {
+          i18n.changeLanguage("en");
+        }}
+      >
+        En
+      </button>
+      <button
+        onClick={() => {
+          i18n.changeLanguage("fr");
+        }}
+      >
+        Fr
+      </button>
+    </div>
+  );
+
   return (
-    <>
+    <div>
       <div className={styles.App}>
         <div className={styles.SideBar}>
           <div className={styles.Logo} />
@@ -126,6 +149,7 @@ function App() {
         <div className={styles.Body}>
           <h1 className={styles.Heading}>{t("heading")}</h1>
           {customersMarkup}
+          {languageButtons}
         </div>
       </div>
       <Modal
@@ -202,7 +226,7 @@ function App() {
           <input type="submit" />
         </form>
       </Modal>
-    </>
+    </div>
   );
 }
 

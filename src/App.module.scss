@@ -89,3 +89,14 @@ $breakpoint-screen: 800px;
     width: calc(100% - var(--spacing-4));
   }
 }
+
+.LanguageButtons {
+  position: absolute;
+  bottom: var(--spacing-6);
+  right: var(--spacing-6);
+
+  & > button {
+    margin-left: var(--spacing-2);
+    cursor: pointer;
+  }
+}
