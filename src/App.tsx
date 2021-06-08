@@ -55,6 +55,11 @@ const CustomerRow = ({ name, email, editCustomer }: CustomerRowProps) => {
   );
 };
 
+const MissingFieldError = () => {
+  const { t } = useTranslation();
+  return <span style={{ color: "red" }}>{t("requiredFieldError")}</span>;
+};
+
 function App() {
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
   const [customers, setCustomers] = React.useState<Customer[]>([]);
@@ -174,12 +179,12 @@ function App() {
             <div className={styles.InputItem}>
               <label htmlFor="name">{t("editCustomerModalName")}</label>
               <input id="name" {...register("name", { required: true })} />
-              {errors.name && <span>{t("requiredFieldError")}</span>}
+              {errors.name && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="email">{t("editCustomerModalEmail")}</label>
               <input id="email" {...register("email", { required: true })} />
-              {errors.email && <span>{t("requiredFieldError")}</span>}
+              {errors.email && <MissingFieldError />}
             </div>
           </div>
           <div className={styles.FormGroup}>
@@ -192,7 +197,7 @@ function App() {
                   )
                 )}
               </select>
-              {errors.channel && <span>{t("requiredFieldError")}</span>}
+              {errors.channel && <MissingFieldError />}
             </div>
           </div>
           <div className={styles.FormGroup}>
@@ -202,17 +207,17 @@ function App() {
                 id="address"
                 {...register("address", { required: true })}
               />
-              {errors.address && <span>{t("requiredFieldError")}</span>}
+              {errors.address && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="postal">{t("editCustomerModalPostal")}</label>
               <input id="postal" {...register("postal", { required: true })} />
-              {errors.postal && <span>{t("requiredFieldError")}</span>}
+              {errors.postal && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="city">{t("editCustomerModalCity")}</label>
               <input id="city" {...register("city", { required: true })} />
-              {errors.city && <span>{t("requiredFieldError")}</span>}
+              {errors.city && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="province">{t("editCustomerModalProvince")}</label>
@@ -220,7 +225,7 @@ function App() {
                 id="province"
                 {...register("province", { required: true })}
               />
-              {errors.province && <span>{t("requiredFieldError")}</span>}
+              {errors.province && <MissingFieldError />}
             </div>
           </div>
           <input type="submit" />
