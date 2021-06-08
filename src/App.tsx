@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import "./locales/i18n";
 import axios from "axios";
 import Modal from "react-modal";
+import { useForm } from "react-hook-form";
 
 const modalStyles = {
   content: {
@@ -45,6 +46,11 @@ interface CustomerRowProps {
   isHeader?: Boolean;
 }
 
+interface Inputs {
+  example: string;
+  exampleRequired: string;
+}
+
 const CustomerRow = ({ name, email, edit, isHeader }: CustomerRowProps) => (
   <div
     className={`${styles.CustomerRow} ${isHeader && styles.CustomerRowBold}`}
@@ -76,6 +82,12 @@ function App() {
   const [customers, setCustomers] = React.useState<Customer[]>([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { t } = useTranslation();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit = (data: any) => console.log(data);
 
   React.useEffect(() => {
     const getCustomers = async () => {
@@ -121,16 +133,11 @@ function App() {
         style={modalStyles}
         contentLabel="Test Modal"
       >
-        <form>
-          <input />
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("customer info goes here...");
-            }}
-          >
-            Submit
-          </button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input defaultValue="test" {...register("example")} />
+          <input {...register("exampleRequired", { required: true })} />
+          {errors.exampleRequired && <span>This field is required</span>}
+          <input type="submit" />
         </form>
       </Modal>
     </>
