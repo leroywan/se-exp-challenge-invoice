@@ -19,11 +19,12 @@ const modalStyles = {
 
 Modal.setAppElement("#root");
 
+type Channels = "website" | "email" | "phone" | "word-of-mouth" | "other";
 interface Customer {
   id: number;
   name: string;
   email: string;
-  channel: string;
+  channel: Channels;
   address: string;
   postal: string;
   city: string;
@@ -35,45 +36,29 @@ interface GetCustomerResponse {
   customers: Customer[];
 }
 
-interface CustomerListProps {
-  customers: Customer[];
-}
-
 interface CustomerRowProps {
   name: Customer["name"];
   email: Customer["email"];
-  edit?: React.ReactElement;
-  isHeader?: Boolean;
+  editCustomer?: () => void;
 }
 
-interface Inputs {
-  example: string;
-  exampleRequired: string;
+interface FormInputs {
+  name: string;
+  email: string;
+  channel: Channels;
+  address: string;
+  postal: string;
+  city: string;
+  province: string;
 }
 
-const CustomerRow = ({ name, email, edit, isHeader }: CustomerRowProps) => (
-  <div
-    className={`${styles.CustomerRow} ${isHeader && styles.CustomerRowBold}`}
-  >
+const CustomerRow = ({ name, email, editCustomer }: CustomerRowProps) => (
+  <div className={styles.CustomerRow}>
     <div className={styles.CustomerRowItem}>{name}</div>
     <div className={styles.CustomerRowItem}>{email}</div>
-    <div className={styles.CustomerRowItem}>{edit}</div>
-  </div>
-);
-
-const CustomerList = ({ customers }: CustomerListProps) => (
-  <div className={styles.CustomerList}>
-    <CustomerRow name="Name" email="Email" isHeader />
-    {customers.map((customer) => (
-      <CustomerRow
-        key={customer.id}
-        name={customer.name}
-        email={customer.email}
-        edit={(() => (
-          <button>Edit</button>
-        ))()}
-      />
-    ))}
+    <div className={styles.CustomerRowItem}>
+      <button onClick={editCustomer}>edit</button>
+    </div>
   </div>
 );
 
@@ -85,9 +70,9 @@ function App() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit = (data: any) => console.log(data);
+  } = useForm<FormInputs>();
 
   React.useEffect(() => {
     const getCustomers = async () => {
@@ -101,8 +86,38 @@ function App() {
     getCustomers();
   }, []);
 
+  const onSubmit = (data: any) => console.log(data);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const handleEditCustomer = ({
+    name,
+    email,
+    channel,
+    address,
+    postal,
+    city,
+    province,
+  }: Customer) => {
+    function callback() {
+      reset({ name, email, channel, address, postal, city, province });
+      openModal();
+    }
+    return callback;
+  };
+
   const customersMarkup = !isLoading ? (
-    <CustomerList customers={customers} />
+    customers.map((customer) => (
+      <CustomerRow
+        key={customer.id}
+        name={customer.name}
+        email={customer.email}
+        editCustomer={handleEditCustomer({ ...customer })}
+      />
+    ))
   ) : (
     <p>loading...</p>
   );
@@ -116,27 +131,23 @@ function App() {
         <div className={styles.Body}>
           <h1 className={styles.Heading}>{t("heading")}</h1>
           {customersMarkup}
-          <button
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
-          >
-            test modal
-          </button>
         </div>
       </div>
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={() => {
-          setIsModalOpen(false);
-        }}
+        onRequestClose={closeModal}
         style={modalStyles}
         contentLabel="Test Modal"
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input defaultValue="test" {...register("example")} />
-          <input {...register("exampleRequired", { required: true })} />
-          {errors.exampleRequired && <span>This field is required</span>}
+          <input {...register("name", { required: true })} />
+          <input {...register("email", { required: true })} />
+          <input {...register("channel", { required: true })} />
+          <input {...register("address", { required: true })} />
+          <input {...register("postal", { required: true })} />
+          <input {...register("city", { required: true })} />
+          <input {...register("province", { required: true })} />
+          {errors.name && <span>This field is required</span>}
           <input type="submit" />
         </form>
       </Modal>
