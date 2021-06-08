@@ -3,6 +3,20 @@ import styles from "./App.module.scss";
 import { useTranslation } from "react-i18next";
 import "./locales/i18n";
 import axios from "axios";
+import Modal from "react-modal";
+
+const modalStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+Modal.setAppElement("#root");
 
 interface Customer {
   id: number;
@@ -58,9 +72,10 @@ const CustomerList = ({ customers }: CustomerListProps) => (
 );
 
 function App() {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
   const [customers, setCustomers] = React.useState<Customer[]>([]);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     const getCustomers = async () => {
@@ -81,15 +96,44 @@ function App() {
   );
 
   return (
-    <div className={styles.App}>
-      <div className={styles.SideBar}>
-        <div className={styles.Logo} />
+    <>
+      <div className={styles.App}>
+        <div className={styles.SideBar}>
+          <div className={styles.Logo} />
+        </div>
+        <div className={styles.Body}>
+          <h1 className={styles.Heading}>{t("heading")}</h1>
+          {customersMarkup}
+          <button
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            test modal
+          </button>
+        </div>
       </div>
-      <div className={styles.Body}>
-        <h1 className={styles.Heading}>{t("heading")}</h1>
-        {customersMarkup}
-      </div>
-    </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => {
+          setIsModalOpen(false);
+        }}
+        style={modalStyles}
+        contentLabel="Test Modal"
+      >
+        <form>
+          <input />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("customer info goes here...");
+            }}
+          >
+            Submit
+          </button>
+        </form>
+      </Modal>
+    </>
   );
 }
 
