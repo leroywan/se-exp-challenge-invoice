@@ -7,6 +7,8 @@ import Modal from "react-modal";
 import { useForm } from "react-hook-form";
 import i18n from "i18next";
 
+import { classNames } from "./utils/classNames";
+
 Modal.setAppElement("#root");
 
 type Channels = "website" | "email" | "phone" | "word-of-mouth" | "other";
@@ -52,7 +54,10 @@ const CustomerRow = ({
   const { t } = useTranslation();
   return (
     <div
-      className={`${styles.CustomerRow} ${bolded && styles.CustomerRowBolded}`}
+      className={classNames(
+        styles.CustomerRow,
+        bolded && styles.CustomerRowBolded
+      )}
     >
       <div className={styles.CustomerRowItem}>{name}</div>
       <div className={styles.CustomerRowItem}>{email}</div>
