@@ -65,9 +65,9 @@ function App() {
 
   React.useEffect(() => {
     const getCustomers = async () => {
-      const response = await axios.get<GetCustomerResponse>(
-        "https://rawgit.com/wvchallenges/se-exp-challenge-invoice/master/settings.json"
-      );
+      const customersApi =
+        "https://rawgit.com/wvchallenges/se-exp-challenge-invoice/master/settings.json";
+      const response = await axios.get<GetCustomerResponse>(customersApi);
 
       setCustomers(response.data.customers);
       setIsLoading(false);
@@ -79,9 +79,11 @@ function App() {
     console.log(data);
     closeModal();
   };
+
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
