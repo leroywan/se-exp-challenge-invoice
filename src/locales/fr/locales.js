@@ -1,3 +1,3 @@
 export const TRANSLATIONS_FR = {
-  welcome: "Bonjour {{name}}",
+  heading: "Customers",
 };

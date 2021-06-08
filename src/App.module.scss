@@ -1,38 +1,40 @@
+$breakpoint-screen: 800px;
+
 .App {
-  text-align: center;
-}
+  display: grid;
+  grid-template-columns: 1fr;
 
-.AppLogo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .AppLogo {
-    animation: AppLogoSpin infinite 20s linear;
+  @media screen and (min-width: $breakpoint-screen) {
+    grid-template-columns: var(--width-sidebar) 1fr;
   }
 }
 
-.AppHeader {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.SideBar {
+  padding: var(--spacing-4);
+  background-color: var(--color-bg);
+  height: calc(100vh - var(--spacing-8));
+  display: none;
+
+  @media screen and (min-width: $breakpoint-screen) {
+    display: block;
+  }
 }
 
-.AppLink {
-  color: #61dafb;
+.Logo {
+  width: 100%;
+  height: var(--height-logo);
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
+  text-indent: -500%;
+  background: url("./static/wave-logo.svg") left top no-repeat;
+  background-size: auto 200%;
 }
 
-@keyframes AppLogoSpin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Body {
+  padding: var(--spacing-8) var(--spacing-8);
+}
+
+.Heading {
+  margin: 0 0 var(--spacing-4) 0;
 }

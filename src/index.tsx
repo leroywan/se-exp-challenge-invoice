@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App color="rgb(123,250,220)" testString="Bloop" />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
