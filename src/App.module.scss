@@ -82,7 +82,8 @@ $breakpoint-screen: 800px;
     margin-bottom: var(--spacing-1);
   }
 
-  & > input {
+  & > input,
+  & > select {
     display: block;
     padding: var(--spacing-2);
     width: calc(100% - var(--spacing-4));

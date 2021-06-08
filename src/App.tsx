@@ -159,10 +159,13 @@ function App() {
           <div className={styles.FormGroup}>
             <div className={styles.InputItem}>
               <label htmlFor="channel">{t("editCustomerModalChannel")}</label>
-              <input
-                id="channel"
-                {...register("channel", { required: true })}
-              />
+              <select id="channel" {...register("channel", { required: true })}>
+                {["website", "email", "phone", "word-of-mouth", "other"].map(
+                  (item) => (
+                    <option key={item}>{item}</option>
+                  )
+                )}
+              </select>
               {errors.channel && <span>{t("requiredFieldError")}</span>}
             </div>
           </div>
