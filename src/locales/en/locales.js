@@ -1,6 +1,7 @@
 export const TRANSLATIONS_EN = {
   heading: "Customers",
   requiredFieldError: "This field is required",
+  errorMessage: "Error: {{message}}",
   editButtonLabel: "Edit",
   editCustomerModalTitle: "Edit customer",
   editCustomerModalName: "Name",

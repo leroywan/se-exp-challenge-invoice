@@ -9,8 +9,6 @@ import i18n from "i18next";
 
 import { classNames } from "./utils/classNames";
 
-Modal.setAppElement("#root");
-
 type Channels = "website" | "email" | "phone" | "word-of-mouth" | "other";
 interface Customer {
   id: number;
@@ -63,7 +61,9 @@ const CustomerRow = ({
       <div className={styles.CustomerRowItem}>{email}</div>
       <div className={styles.CustomerRowItem}>
         {editCustomer && (
-          <button onClick={editCustomer}>{t("editButtonLabel")}</button>
+          <button onClick={editCustomer} data-testid="editCustomerBtn">
+            {t("editButtonLabel")}
+          </button>
         )}
       </div>
     </div>
@@ -76,6 +76,7 @@ const MissingFieldError = () => {
 };
 
 function App() {
+  const [serverError, setServerError] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
   const [customers, setCustomers] = React.useState<Customer[]>([]);
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -88,15 +89,31 @@ function App() {
   } = useForm<FormInputs>();
 
   React.useEffect(() => {
+    // Need to cleanup because the app will set state while unmounted between test cases
+    let mounted = true;
+    const cleanup = () => {
+      mounted = false;
+    };
+
     const getCustomers = async () => {
       const customersApi =
         "https://rawgit.com/wvchallenges/se-exp-challenge-invoice/master/settings.json";
-      const response = await axios.get<GetCustomerResponse>(customersApi);
+      const response = await axios
+        .get<GetCustomerResponse>(customersApi)
+        .catch((err) => err);
 
-      setCustomers(response.data.customers);
-      setIsLoading(false);
+      if (mounted && response instanceof Error) {
+        setServerError(t("errorMessage", { message: response.message }));
+        return cleanup;
+      }
+
+      if (mounted) {
+        setCustomers(response.data.customers);
+        setIsLoading(false);
+      }
     };
     getCustomers();
+    return cleanup;
   }, []);
 
   const onSubmit = (data: any) => {
@@ -138,7 +155,13 @@ function App() {
       />
     ))
   ) : (
-    <p>loading...</p>
+    <p>{"loading..."}</p>
+  );
+
+  const serverErrorMarkup = serverError && (
+    <span data-testid="serverError" style={{ color: "red" }}>
+      {serverError}
+    </span>
   );
 
   const languageButtons = (
@@ -173,11 +196,15 @@ function App() {
             email={t("editCustomerModalEmail")}
             bolded
           />
-          {customersMarkup}
+          {serverErrorMarkup || customersMarkup}
           {languageButtons}
         </div>
       </div>
       <Modal
+        appElement={
+          document.getElementById("root") ||
+          document.getElementsByTagName("body")
+        }
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={{
@@ -193,24 +220,36 @@ function App() {
         }}
         contentLabel="Edit Customer Modal"
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} data-testid="editCustomerForm">
           <h2 className={styles.ModalTitle}>{t("editCustomerModalTitle")}</h2>
           <div className={styles.FormGroup}>
             <div className={styles.InputItem}>
               <label htmlFor="name">{t("editCustomerModalName")}</label>
-              <input id="name" {...register("name", { required: true })} />
+              <input
+                aria-label="name"
+                id="name"
+                {...register("name", { required: true })}
+              />
               {errors.name && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="email">{t("editCustomerModalEmail")}</label>
-              <input id="email" {...register("email", { required: true })} />
+              <input
+                aria-label="email"
+                id="email"
+                {...register("email", { required: true })}
+              />
               {errors.email && <MissingFieldError />}
             </div>
           </div>
           <div className={styles.FormGroup}>
             <div className={styles.InputItem}>
               <label htmlFor="channel">{t("editCustomerModalChannel")}</label>
-              <select id="channel" {...register("channel", { required: true })}>
+              <select
+                aria-label="channel"
+                id="channel"
+                {...register("channel", { required: true })}
+              >
                 {["website", "email", "phone", "word-of-mouth", "other"].map(
                   (item) => (
                     <option key={item}>{item}</option>
@@ -225,23 +264,33 @@ function App() {
               <label htmlFor="address">{t("editCustomerModalAddress")}</label>
               <input
                 id="address"
+                aria-label="address"
                 {...register("address", { required: true })}
               />
               {errors.address && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="postal">{t("editCustomerModalPostal")}</label>
-              <input id="postal" {...register("postal", { required: true })} />
+              <input
+                aria-label="postal"
+                id="postal"
+                {...register("postal", { required: true })}
+              />
               {errors.postal && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="city">{t("editCustomerModalCity")}</label>
-              <input id="city" {...register("city", { required: true })} />
+              <input
+                aria-label="city"
+                id="city"
+                {...register("city", { required: true })}
+              />
               {errors.city && <MissingFieldError />}
             </div>
             <div className={styles.InputItem}>
               <label htmlFor="province">{t("editCustomerModalProvince")}</label>
               <input
+                aria-label="province"
                 id="province"
                 {...register("province", { required: true })}
               />
