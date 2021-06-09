@@ -1,57 +1,61 @@
-# Wave Front-end Challenge
+# Leroy's take on Wave's Front-end Challenge
+## Overview
+- Form states handled using [`react-hook-forms`](https://react-hook-form.com/)
+- fully typed using Typescript
+- docker support
+- i18n (translation) support
+- tested (using React Testing Library)
+- Create React App
 
-The purpose of this exercise is to create something that we can work on together during the onsite interview. We do this so that you get a chance to
-collaborate with Wavers during the interview in a situation where you know something better than us (it's your code, after all!)
+_Note: This application is for demonstration purposes only and may not contain all the necessary styles and tests that a truly production-ready application might have. This however is a good base to build upon on given the question requirements._
 
-There isn't a hard deadline for this exercise; take as long as you need to complete it. However, in terms of total time spent actively
-working on the challenge, we ask that you not spend more than a few hours, as we value your time and are happy to leave things open to
-discussion in the on-site interview.
+### Demo using docker
+Docker will allow us to run this app in any environment without worries. To see the app, simply run:
+1. `docker pull leroywan/wave-invoice`
+2. `docker run -p 8080:80 leroywan/wave-invoice`
+3. View the app on `http://localhost:8080/`
 
-Please use whatever tools or frameworks you feel the most comfortable with.
+### Demo using yarn or npm
+1. clone this repo
+2. run `yarn` or `npm install`
+3. run `yarn start` or `npm run start` to start the development server
+4. View the app on `http://localhost:3000/`
 
-Feel free to email [dev.careers@waveapps.com](dev.careers@waveapps.com) if you have any questions.
+### Build
+1. run `yarn build` or `npm run build`, the newly built file should now be inside `/build`
+2. run `yarn global add serve` or `npm install -g serve`
+3. run `serve -s build -l 8080`
+4. View the app on `http://localhost:8080/`
+
+## Decisions
+#### Translation support
+It may seem like it breaks the YAGNI principle, but the benefit is that you total separation between content and logic (seperation of concerns) which can greatly improve productivity because team members who may not be technically-savy can still update the content without touching much code. This also allows for an easy translation in the future when serving different geographical customer segments. 
+
+#### React hook forms
+It is much easier to use a module to handle form states than creating multiple `useState` since there are many nuances with form states that may introduce code bloat and bugs (ex. validations, dirty/clean forms, unnecessary renders). React hook forms is also a11y compliant and will handle input focuses out of the box on validation error.
+
+#### Docker
+Docker allows the app to be run in whatever environment you want without issues since your app is contained. Currently, the built docker image is the built app served using nginx. In the future, it can be very easy to add more components to it to make it a scalable production grade app (Ex. load balancing, reverse-proxy, docker compose, etc...)
+
+#### Typescript
+Coding in Typescript allows for less bugs and more readable code since interfaces and behaviors are predefined. Typescript's syntax highlighting will also point out subtle bugs that may potentially crash the app.
+
+#### React Testing Library
+The idea behind react testing library is that it tests the DOM (what the users would see and interact with) instead of implementation details such as in Enzyme. React testing library also encourages a11y compliant code while writing tests as it promtes the use of aria tags to find test elements.
+
+#### Why React
+React is very performant, the code is easily reusable, the community behind it is very strong. 
+
+#### Why not Redux?
+Redux can easily be introduced when needed as the current application does not depend on many changing application states.
+
 
 ## Project Description
 
-Imagine that this is the early days of Wave's history, and that we are prototyping a new invoicing system in Canada. Our prototype will be entirely API-driven and use a Javascript single-page app as the interface to our APIs.
+The front-end prototype does the following:
 
-One piece of the application will be a settings page where users can manage their customer information. Another team has provided a RESTful API to supply the data. We need you to start working on the client-side portion that will consume this API. For now, we would like to see some early front-end scaffolding to see how you would architect this.
-
-The front-end prototype only needs to do the following:
-
-- Retrieve the data from the GET endpoint
+- Retrieve the data from the GET endpoint [https://rawgit.com/wvchallenges/se-exp-challenge-invoice/master/settings.json]
 - Show a compact list of customers (in the JSON under the "customers" key)
 - Let the user select a customer for editing, which shows a form with name, email, channel (value may be one of 'website', 'email', 'phone', 'word-of-mouth', 'other'), address, postal, city, province
-- All fields are required. Empty values should present an error message if submitted.
-- On form submit, log the JSON payload to console (no need to mock out server calls!)
-
-The JSON will be available by calling GET https://rawgit.com/wvchallenges/se-exp-challenge-invoice/master/settings.json and can be retrieved using fetch, XHR, JQuery or whatever library you're familiar with.
-
-Our desire is to approach this in a way that gives us composable, reusable code for use in later features and products. So some thought should be given to how this code could be expanded upon and repurposed. For now this will be a Canada only product and all addresses are assumed to be in Canada but we plan to roll this out to other countries later. 
-Do not worry about making the UI pretty! Just make it functional. All we ask is that it be easy to add more styling later.
-
-Use whatever framework, tooling, scaffolding, starter-kits you are comfortable with that feel appropriate to this challenge. At Wave, we have used Backbone, Angular, React with the emphasis being heavily on React for current work. Your application should be easy to run and browse, and should run on either Linux or Mac OS X. It should not require any non open-source software.
-
-### Documentation:
-
-Please modify `README.md` to add:
-
-1. Instructions on how to build/run your application
-1. A paragraph or two about what you are particularly proud of in your implementation, and why.
-
-## Submission Instructions
-
-1. Clone the repository.
-1. Complete your project as described above within your local repository.
-1. Ensure everything you want to commit is committed.
-1. Create a git bundle: `git bundle create your_name_front_end.bundle --all`
-1. Email the bundle file to [dev.careers@waveapps.com](dev.careers@waveapps.com)
-
-## Evaluation
-
-Evaluation of your submission will be based on the following criteria.
-
-1. Did you follow the instructions for submission?
-1. Did you document your build/run instructions and your explanation of what you are proud of?
-1. Is the code written such that it can easily be repurposed, reused and expanded upon?
-1. Were the various parts of the application and their roles easily identifiable to the reviewer?
+- All fields are required. Empty values presents an error message if submitted.
+- On form submit, log the JSON payload to console.
