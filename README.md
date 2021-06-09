@@ -34,7 +34,7 @@ _Note: Modal-Portal may log an error but it will not affect the final result of 
 
 ## Decisions
 #### Translation support
-It may seem like it breaks the YAGNI principle, but the benefit is that you total separation between content and logic (seperation of concerns) which can greatly improve productivity because team members who may not be technically-savy can still update the content without touching much code. This also allows for an easy translation in the future when serving different geographical customer segments. 
+It may seem like it breaks the YAGNI principle, but the benefit is that you get total separation between content and logic (seperation of concerns) which can greatly improve productivity because team members who may not be technically-savy can still update the content without touching much code. This also allows for an easy translation in the future when serving different geographical customer segments. 
 
 #### React hook forms
 It is much easier to use a module to handle form states than creating multiple `useState` since there are many nuances with form states that may introduce code bloat and bugs (ex. validations, dirty/clean forms, unnecessary renders). React hook forms is also a11y compliant and will handle input focuses out of the box on validation error.
