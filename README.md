@@ -27,6 +27,11 @@ Docker will allow us to run this app in any environment without worries. To see 
 3. run `serve -s build -l 8080`
 4. View the app on `http://localhost:8080/`
 
+### Tests
+1. run `yarn test` or `npm run test`
+
+_Note: Modal-Portal may log an error but it will not affect the final result of the tests. This is a known issue since the app unmounts for each test case and a state change gets triggered in the portal after eacah test has run_
+
 ## Decisions
 #### Translation support
 It may seem like it breaks the YAGNI principle, but the benefit is that you total separation between content and logic (seperation of concerns) which can greatly improve productivity because team members who may not be technically-savy can still update the content without touching much code. This also allows for an easy translation in the future when serving different geographical customer segments. 
