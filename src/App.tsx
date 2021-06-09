@@ -114,7 +114,7 @@ function App() {
     };
     getCustomers();
     return cleanup;
-  }, []);
+  }, [t]);
 
   const onSubmit = (data: any) => {
     console.log(data);

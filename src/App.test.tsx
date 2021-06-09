@@ -167,6 +167,7 @@ test("populates customer edit modal form with customer city", async () => {
     );
   });
 });
+
 test("populates customer edit modal form with customer postal", async () => {
   render(<App />);
   await waitForElementToBeRemoved(screen.queryByText("loading..."));
